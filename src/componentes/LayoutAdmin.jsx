@@ -241,7 +241,7 @@ export default function LayoutAdmin() {
 
         {/* Área de contenido */}
         <div className="flex-1 p-6 z-0">
-          <Outlet />
+          <Outlet context={{ lang }} />
         </div>
       </main>
 

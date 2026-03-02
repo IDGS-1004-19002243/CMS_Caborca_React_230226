@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import EditButton from '../componentes/EditButton';
 import { useToast } from '../context/ToastContext';
 import BotonesPublicar from '../componentes/BotonesPublicar';
@@ -7,6 +8,8 @@ import { uploadImage } from '../api/uploadService';
 export default function EditarInicio() {
   // Editor de página de inicio
   const { success, error: toastError } = useToast();
+  const context = useOutletContext();
+  const idioma = context?.lang || 'es';
   const [modoEdicion, setModoEdicion] = useState(null); // null, 'carousel', 'productos', etc.
   const [elementoEditando, setElementoEditando] = useState(null);
 
@@ -127,23 +130,6 @@ export default function EditarInicio() {
       nota: { es: '40+ años de tradición', en: '40+ years of tradition' }
     }
   });
-
-  const [idioma, setIdioma] = useState('es');
-
-  useEffect(() => {
-    const handler = (e) => {
-      const l = e?.detail?.lang;
-      if (l) setIdioma(l);
-    };
-    try {
-      const stored = localStorage.getItem('cms:editor:lang');
-      if (stored) setIdioma(stored);
-    } catch (e) {
-      console.error(e);
-    }
-    window.addEventListener('cms:editor:lang-changed', handler);
-    return () => window.removeEventListener('cms:editor:lang-changed', handler);
-  }, []);
 
   // Cargar contenido desde la API al iniciar
   const cargarDatos = async () => {
