@@ -10,7 +10,7 @@ import { useOutletContext } from 'react-router-dom'
 
 export default function EditarContacto() {
   const { success, error: toastError } = useToast();
-  const { idioma } = useOutletContext();
+  const { lang: idioma = 'es' } = useOutletContext();
 
   const [info, setInfo] = useState({
     telefono: '+52 123 456 789',
@@ -183,8 +183,14 @@ export default function EditarContacto() {
           {/* Información de contacto */}
           <section data-cms-section="contacto-info" className="bg-white rounded-lg shadow p-6 relative">
             <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl font-serif text-caborca-cafe mb-3">¿Cómo podemos ayudarte?</h2>
-              <p className="text-caborca-cafe text-sm leading-relaxed max-w-2xl mx-auto">Nuestro equipo está listo para responder todas tus preguntas sobre nuestros productos, servicios o cualquier consulta que tengas.</p>
+              <h2 className="text-2xl sm:text-3xl font-serif text-caborca-cafe mb-3">
+                {idioma === 'es' ? '¿Cómo podemos ayudarte?' : 'How can we help you?'}
+              </h2>
+              <p className="text-caborca-cafe text-sm leading-relaxed max-w-2xl mx-auto">
+                {idioma === 'es'
+                  ? 'Nuestro equipo está listo para responder todas tus preguntas sobre nuestros productos, servicios o cualquier consulta que tengas.'
+                  : 'Our team is ready to answer all your questions about our products, services or any inquiry you may have.'}
+              </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -219,27 +225,27 @@ export default function EditarContacto() {
                 <form onSubmit={(e) => { e.preventDefault(); success('Formulario enviado (demo)') }} className="space-y-6">
                   <div className="grid sm:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-xs font-semibold text-caborca-cafe mb-2">Nombre Completo</label>
-                      <input placeholder="Tu nombre" className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-caborca-cafe focus:ring-2 focus:ring-caborca-cafe/20 transition-all" />
+                      <label className="block text-xs font-semibold text-caborca-cafe mb-2">{idioma === 'es' ? 'Nombre Completo' : 'Full Name'}</label>
+                      <input placeholder={idioma === 'es' ? 'Tu nombre' : 'Your name'} className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-caborca-cafe focus:ring-2 focus:ring-caborca-cafe/20 transition-all" />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-caborca-cafe mb-2">Correo Electrónico</label>
+                      <label className="block text-xs font-semibold text-caborca-cafe mb-2">{idioma === 'es' ? 'Correo Electrónico' : 'Email'}</label>
                       <input placeholder="correo@ejemplo.com" className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-caborca-cafe focus:ring-2 focus:ring-caborca-cafe/20 transition-all" />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-caborca-cafe mb-2">Teléfono</label>
+                      <label className="block text-xs font-semibold text-caborca-cafe mb-2">{idioma === 'es' ? 'Teléfono' : 'Phone'}</label>
                       <input placeholder="+52 (555) 123-4567" className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-caborca-cafe focus:ring-2 focus:ring-caborca-cafe/20 transition-all" />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-caborca-cafe mb-2">Mensaje</label>
-                    <textarea placeholder="Cuéntanos cómo podemos ayudarte..." rows={6} className="w-full px-4 py-4 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-caborca-cafe focus:ring-2 focus:ring-caborca-cafe/20 transition-all resize-none" />
+                    <label className="block text-xs font-semibold text-caborca-cafe mb-2">{idioma === 'es' ? 'Mensaje' : 'Message'}</label>
+                    <textarea placeholder={idioma === 'es' ? 'Cuéntanos cómo podemos ayudarte...' : 'Tell us how we can help you...'} rows={6} className="w-full px-4 py-4 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-caborca-cafe focus:ring-2 focus:ring-caborca-cafe/20 transition-all resize-none" />
                   </div>
 
                   <div className="text-center pt-4">
                     <button type="submit" className="bg-caborca-cafe text-white font-bold tracking-wider text-sm px-12 py-4 rounded-lg shadow-lg hover:bg-caborca-negro transition-colors">
-                      ENVIAR MENSAJE
+                      {idioma === 'es' ? 'ENVIAR MENSAJE' : 'SEND MESSAGE'}
                     </button>
                   </div>
                 </form>

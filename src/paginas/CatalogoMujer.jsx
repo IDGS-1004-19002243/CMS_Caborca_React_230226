@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import { useToast } from '../context/ToastContext';
 import { uploadImage } from '../api/uploadService';
 import { settingsService } from '../api/settingsService';
+import { useOutletContext } from 'react-router-dom';
 
 export default function CatalogoMujer() {
   const { success, error: toastError } = useToast();
+  const { lang: idioma = 'es' } = useOutletContext();
   const [productos, setProductos] = useState([
     { id: 1, nombre: 'Bota Alta Elegante', sku: 'MW-001', descripcion: 'Bota alta con diseño femenino y elegante.', materiales: ['piel'], marca: 'Caborca', categoria: 'alta', destacado: false, imagen: '/images/bota-mujer-1.jpg', imagenes: ['/images/bota-mujer-1.jpg'], tags: ['elegante'] },
     { id: 2, nombre: 'Botín Casual', sku: 'MW-002', descripcion: 'Botín cómodo para uso diario.', materiales: ['piel', 'goma'], marca: 'Caborca', categoria: 'botin', destacado: false, imagen: '/images/bota-mujer-2.jpg', imagenes: ['/images/bota-mujer-2.jpg'], tags: ['casual'] },
@@ -15,19 +17,12 @@ export default function CatalogoMujer() {
   const [filtro, setFiltro] = useState('todos');
   const [modalAbierto, setModalAbierto] = useState(false);
   const [productoEditando, setProductoEditando] = useState(null);
-  const [idioma, setIdioma] = useState('es');
-  useEffect(() => {
-    const handler = (e) => {
-      const l = e && e.detail && e.detail.lang;
-      if (l) setIdioma(l);
-    };
-    try { const stored = localStorage.getItem('cms:editor:lang'); if (stored) setIdioma(stored); } catch (e) { }
-    window.addEventListener('cms:editor:lang-changed', handler);
-    return () => window.removeEventListener('cms:editor:lang-changed', handler);
-  }, []);
+  const [guardando, setGuardando] = useState(false);
   const [contenido, setContenido] = useState({
     titulo: 'Calzado Dama',
+    titulo_EN: "Women's Footwear",
     subtitulo: 'Elegancia y tradición en cada paso.',
+    subtitulo_EN: 'Elegance and tradition in every step.',
     imagenPortada: '',
     mostrarPortada: true
   });
@@ -61,7 +56,7 @@ export default function CatalogoMujer() {
       setGuardandoContenido(false);
     }
   };
-  const [guardando, setGuardando] = useState(false);
+
 
   const categorias = ['todos', 'alta', 'botin', 'vaquera', 'moda'];
 

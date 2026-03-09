@@ -8,7 +8,7 @@ import { useOutletContext } from 'react-router-dom';
 
 const EditarResponsabilidad = () => {
   const { success, error: toastError } = useToast();
-  const { idioma } = useOutletContext();
+  const { lang: idioma = 'es' } = useOutletContext();
 
   const defaultContent = {
     hero: {
@@ -76,7 +76,7 @@ const EditarResponsabilidad = () => {
       try {
         const data = await textosService.getTextos('responsabilidad');
         if (data && Object.keys(data).length > 0) {
-          setContent(data);
+          setContent(prev => ({ ...prev, ...data }));
         }
       } catch (e) {
         console.error('Error loading content', e);
@@ -463,12 +463,12 @@ const EditarResponsabilidad = () => {
             </div>
 
             <div className="max-w-7xl mx-auto mt-12">
-              <div className="grid lg:grid-cols-2 gap-12 items-start">
+              <div className="grid lg:grid-cols-2 gap-12 items-stretch">
                 {/* LEFT: stacked feature cards + large stat card */}
-                <div className="space-y-6">
+                <div className="space-y-6 flex flex-col justify-between h-full">
                   <div className="space-y-4">
                     <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100 flex items-start gap-4">
-                      <div className="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center mt-1">
+                      <div className="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center mt-1 shrink-0">
                         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.5 6.5L21 9l-5 3.6L17.5 20 12 16.9 6.5 20 7 12.6 2 9l6.5-0.5L12 2z" fill="currentColor" /></svg>
                       </div>
                       <div>
@@ -506,23 +506,22 @@ const EditarResponsabilidad = () => {
                 </div>
 
                 {/* RIGHT: image grid */}
-                <div>
-                  <div className="relative rounded-2xl overflow-hidden shadow-2xl mb-6">
-                    <img src={content.shambhala.image} alt="Proyecto Shambhala" className="w-full h-[460px] object-cover rounded-2xl" />
+                <div className="flex flex-col gap-4 sm:gap-6 h-full">
+                  <div className="flex-1 min-h-[250px] relative rounded-2xl shadow-2xl overflow-hidden group">
+                    <img src={content.shambhala.image} alt="Proyecto Shambhala" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="rounded-2xl overflow-hidden shadow-md bg-white h-44 flex items-center justify-center border border-gray-100">
-                      <img src={content.shambhala.image} alt="thumb" className="w-full h-full object-cover rounded-2xl" />
+                  <div className="grid grid-cols-2 gap-4 sm:gap-6 flex-1 min-h-[200px]">
+                    <div className="relative rounded-xl shadow-lg overflow-hidden group">
+                      <img src={content.shambhala.thumb1} alt="thumb" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     </div>
-                    <div className="rounded-2xl overflow-hidden shadow-md bg-white h-44 flex items-center justify-center border border-gray-100">
-                      <img src={content.shambhala.image} alt="thumb" className="w-full h-full object-cover rounded-2xl" />
+                    <div className="relative rounded-xl shadow-lg overflow-hidden group">
+                      <img src={content.shambhala.thumb2} alt="thumb" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     </div>
                   </div>
-
-                  <EditButton section="shambhala" onOpen={() => openEditor('shambhala')} className="absolute top-4 right-4 z-20" />
                 </div>
               </div>
             </div>
+            <EditButton section="shambhala" onOpen={() => openEditor('shambhala')} className="absolute top-4 right-4 z-20" />
           </div>
         </section>
 
@@ -900,7 +899,7 @@ const EditarResponsabilidad = () => {
         )}
 
       </main>
-    </div>
+    </div >
   );
 };
 

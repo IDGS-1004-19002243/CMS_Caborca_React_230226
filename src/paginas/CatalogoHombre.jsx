@@ -2,9 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useToast } from '../context/ToastContext';
 import { uploadImage } from '../api/uploadService';
 import { settingsService } from '../api/settingsService';
+import { useOutletContext } from 'react-router-dom';
 
 export default function CatalogoHombre() {
   const { success, error: toastError } = useToast();
+  const { lang: idioma = 'es' } = useOutletContext();
+
   const [productos, setProductos] = useState([
     { id: 1, nombre: 'Bota Vaquera Clásica', sku: 'HV-001', descripcion: 'Bota vaquera tradicional hecha a mano.', materiales: ['piel', 'suela cuero'], marca: 'Caborca', categoria: 'vaquera', destacado: false, imagen: '/images/bota-hombre-1.jpg', imagenes: ['/images/bota-hombre-1.jpg'], tags: ['vaquera', 'clásica'] },
     { id: 2, nombre: 'Bota Casual Premium', sku: 'HV-002', descripcion: 'Bota casual para uso diario con acabado premium.', materiales: ['piel'], marca: 'Caborca', categoria: 'casual', destacado: false, imagen: '/images/bota-hombre-2.jpg', imagenes: ['/images/bota-hombre-2.jpg'], tags: ['casual'] },
@@ -14,26 +17,17 @@ export default function CatalogoHombre() {
   const [filtro, setFiltro] = useState('todos');
   const [modalAbierto, setModalAbierto] = useState(false);
   const [productoEditando, setProductoEditando] = useState(null);
-  const [idioma, setIdioma] = useState('es');
   const [guardando, setGuardando] = useState(false);
-
-  useEffect(() => {
-    const handler = (e) => {
-      const l = e && e.detail && e.detail.lang;
-      if (l) setIdioma(l);
-    };
-    try { const stored = localStorage.getItem('cms:editor:lang'); if (stored) setIdioma(stored); } catch (e) { }
-    window.addEventListener('cms:editor:lang-changed', handler);
-    return () => window.removeEventListener('cms:editor:lang-changed', handler);
-  }, []);
-
+  const [guardandoContenido, setGuardandoContenido] = useState(false);
   const [contenido, setContenido] = useState({
     titulo: 'Calzado Caballero',
+    titulo_EN: 'Men\'s Footwear',
     subtitulo: 'Descubre nuestra colección exclusiva de botas artesanales.',
+    subtitulo_EN: 'Discover our exclusive collection of artisan boots.',
     imagenPortada: '',
     mostrarPortada: true
   });
-  const [guardandoContenido, setGuardandoContenido] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {

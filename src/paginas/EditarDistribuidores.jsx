@@ -8,7 +8,7 @@ import { useOutletContext } from 'react-router-dom';
 
 export default function EditarDistribuidores() {
   const { success, error: toastError, info } = useToast();
-  const { idioma } = useOutletContext();
+  const { lang: idioma = 'es' } = useOutletContext();
 
   const defaultContent = {
     hero: {
@@ -478,21 +478,21 @@ export default function EditarDistribuidores() {
                   <div className="grid md:grid-cols-3 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-caborca-cafe mb-2">
-                        Nombre completo
+                        {idioma === 'es' ? 'Nombre completo' : 'Full name'}
                       </label>
                       <input
                         type="text"
                         name="nombreCompleto"
                         value={formulario.nombreCompleto}
                         onChange={manejarCambioFormulario}
-                        placeholder="Ej: Juan Pérez"
+                        placeholder={idioma === 'es' ? 'Ej: Juan Pérez' : 'Ex: John Smith'}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-caborca-cafe focus:border-transparent"
                         required
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-caborca-cafe mb-2">
-                        Correo electrónico
+                        {idioma === 'es' ? 'Correo electrónico' : 'Email'}
                       </label>
                       <input
                         type="email"
@@ -506,7 +506,7 @@ export default function EditarDistribuidores() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-caborca-cafe mb-2">
-                        Teléfono
+                        {idioma === 'es' ? 'Teléfono' : 'Phone'}
                       </label>
                       <input
                         type="tel"
@@ -523,28 +523,28 @@ export default function EditarDistribuidores() {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-caborca-cafe mb-2">
-                        Ciudad
+                        {idioma === 'es' ? 'Ciudad' : 'City'}
                       </label>
                       <input
                         type="text"
                         name="ciudad"
                         value={formulario.ciudad}
                         onChange={manejarCambioFormulario}
-                        placeholder="Ej: Guadalajara"
+                        placeholder={idioma === 'es' ? 'Ej: Guadalajara' : 'Ex: Los Angeles'}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-caborca-cafe focus:border-transparent"
                         required
                       />
                     </div>
                     <div className="md:col-span-1">
                       <label className="block text-sm font-medium text-caborca-cafe mb-1">
-                        Mensaje
+                        {idioma === 'es' ? 'Mensaje' : 'Message'}
                       </label>
                       <textarea
                         rows="1"
                         name="mensaje"
                         value={formulario.mensaje}
                         onChange={manejarCambioFormulario}
-                        placeholder="Cuéntanos sobre tu negocio..."
+                        placeholder={idioma === 'es' ? 'Cuéntanos sobre tu negocio...' : 'Tell us about your business...'}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-caborca-cafe focus:border-transparent resize-none h-full"
                       ></textarea>
                     </div>
@@ -567,7 +567,7 @@ export default function EditarDistribuidores() {
                     <div className="flex items-center gap-8">
                       <div className="text-center">
                         <div className="text-2xl font-bold text-caborca-cafe">{content.counters.distribuidores}</div>
-                        <div className="text-xs text-caborca-cafe/60">Distribuidores</div>
+                        <div className="text-xs text-caborca-cafe/60">{idioma === 'es' ? 'Distribuidores' : 'Distributors'}</div>
                       </div>
                       <div className="w-14 h-14 bg-caborca-cafe rounded-full flex items-center justify-center">
                         <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -576,7 +576,7 @@ export default function EditarDistribuidores() {
                       </div>
                       <div className="text-center">
                         <div className="text-2xl font-bold text-caborca-cafe">{content.counters.estados}</div>
-                        <div className="text-xs text-caborca-cafe/60">Estados</div>
+                        <div className="text-xs text-caborca-cafe/60">{idioma === 'es' ? 'Estados' : 'States'}</div>
                       </div>
                     </div>
                   </div>

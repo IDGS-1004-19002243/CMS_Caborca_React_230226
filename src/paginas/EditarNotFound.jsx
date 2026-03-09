@@ -25,7 +25,7 @@ export default function EditarNotFound() {
             try {
                 const data = await textosService.getTextos('notfound');
                 if (data && Object.keys(data).length > 0) {
-                    setContent(data);
+                    setContent(prev => ({ ...prev, ...data }));
                 }
             } catch (e) {
                 console.error('Error fetching 404 content:', e);
@@ -66,7 +66,7 @@ export default function EditarNotFound() {
                             <label className="block text-sm font-semibold text-gray-700 mb-1 uppercase tracking-wide">Título Principal</label>
                             <input
                                 type="text"
-                                value={idioma === 'es' ? content.titulo_ES : content.titulo_EN}
+                                value={idioma === 'es' ? (content.titulo_ES || content.titulo || '¡Esa ruta no existe, vaquero!') : (content.titulo_EN || 'That route does not exist, cowboy!')}
                                 onChange={(e) => handleChange(idioma === 'es' ? 'titulo_ES' : 'titulo_EN', e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded focus:border-caborca-cafe focus:outline-none"
                             />
@@ -76,7 +76,7 @@ export default function EditarNotFound() {
                             <label className="block text-sm font-semibold text-gray-700 mb-1 uppercase tracking-wide">Texto del Botón</label>
                             <input
                                 type="text"
-                                value={idioma === 'es' ? content.textoBoton_ES : content.textoBoton_EN}
+                                value={idioma === 'es' ? (content.textoBoton_ES || content.textoBoton || 'Volver al pueblito') : (content.textoBoton_EN || 'Return to town')}
                                 onChange={(e) => handleChange(idioma === 'es' ? 'textoBoton_ES' : 'textoBoton_EN', e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded focus:border-caborca-cafe focus:outline-none"
                             />
@@ -86,7 +86,7 @@ export default function EditarNotFound() {
                             <label className="block text-sm font-semibold text-gray-700 mb-1 uppercase tracking-wide">Mensaje</label>
                             <textarea
                                 rows={3}
-                                value={idioma === 'es' ? content.mensaje_ES : content.mensaje_EN}
+                                value={idioma === 'es' ? (content.mensaje_ES || content.mensaje || 'Parece que te has alejado demasiado del camino.\nNo te preocupes, endereza las riendas y vuelve con nosotros.') : (content.mensaje_EN || 'It seems you have strayed too far off the path.\nDon\'t worry, straighten the reins and come back to us.')}
                                 onChange={(e) => handleChange(idioma === 'es' ? 'mensaje_ES' : 'mensaje_EN', e.target.value)}
                                 className="w-full px-3 py-2 border border-gray-300 rounded focus:border-caborca-cafe focus:outline-none resize-none"
                             />
@@ -155,36 +155,48 @@ export default function EditarNotFound() {
             {/* Vista Previa (Derecha) */}
             <div className="w-full lg:w-3/5 bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-gray-800 relative" style={{ minHeight: '460px' }}>
 
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-900 text-white font-sans p-6">
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-900 text-white font-sans overflow-hidden">
                     {/* Background Image */}
                     <div className="absolute inset-0 z-0">
-                        {content.imagenFondo && (
+                        {content.imagenFondo ? (
                             <img
                                 src={content.imagenFondo}
-                                alt="Página no encontrada"
+                                alt="Fondo preview"
                                 className="w-full h-full object-cover opacity-50 transition-all duration-500"
                             />
+                        ) : (
+                            <div className="w-full h-full bg-gray-800"></div>
                         )}
                         <div className="absolute inset-0 bg-black/60"></div>
                     </div>
 
-                    {/* Content */}
-                    <div className="relative z-10 text-center w-full max-w-2xl mx-auto">
-                        <h1 className="text-[5rem] sm:text-[7rem] font-serif font-bold text-caborca-bronce leading-none select-none opacity-80" style={{ textShadow: '4px 4px 0px rgba(0,0,0,0.5)' }}>
-                            404
-                        </h1>
-                        <h2 className="text-xl sm:text-2xl font-bold mb-4 text-white tracking-wide uppercase">
-                            {idioma === 'es' ? content.titulo_ES : content.titulo_EN}
-                        </h2>
-                        <p className="text-gray-300 text-sm mb-6 max-w-lg mx-auto leading-relaxed whitespace-pre-line">
-                            {idioma === 'es' ? content.mensaje_ES : content.mensaje_EN}
-                        </p>
-                        <button className="bg-caborca-cafe text-white font-bold py-2 px-6 rounded-full flex items-center gap-2 mx-auto text-sm">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                            <span>{idioma === 'es' ? content.textoBoton_ES : content.textoBoton_EN}</span>
-                        </button>
+                    {/* Preview Content */}
+                    <div className="relative z-10 text-center w-full px-4 flex flex-col items-center justify-center min-h-[460px]">
+
+                        {/* 404 background number scaled for preview */}
+                        <div className="absolute inset-x-0 inset-y-0 flex items-center justify-center select-none pointer-events-none -mt-20 z-0">
+                            <h1 className="text-[10rem] md:text-[16rem] font-serif font-bold text-[#b58e5a] leading-none opacity-90 drop-shadow-2xl brightness-90">
+                                404
+                            </h1>
+                        </div>
+
+                        {/* Front Content */}
+                        <div className="relative z-10 mt-10">
+                            <h2 className="text-2xl md:text-3xl font-serif font-bold mb-4 text-white tracking-widest uppercase" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+                                {idioma === 'es' ? (content.titulo_ES || content.titulo || '¡Esa ruta no existe, vaquero!') : (content.titulo_EN || 'That route does not exist, cowboy!')}
+                            </h2>
+
+                            <div className="w-16 md:w-20 h-1 bg-[#b58e5a] mx-auto mb-6 shadow-lg"></div>
+
+                            <p className="text-base md:text-lg text-white max-w-lg mx-auto mb-8 leading-relaxed font-serif font-medium whitespace-pre-wrap" style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.8)' }}>
+                                {idioma === 'es' ? (content.mensaje_ES || content.mensaje || 'Parece que te has alejado demasiado del camino.\nNo te preocupes, endereza las riendas y vuelve con nosotros.') : (content.mensaje_EN || 'It seems you have strayed too far off the path.\nDon\'t worry, straighten the reins and come back to us.')}
+                            </p>
+
+                            <button className="inline-flex items-center gap-2 bg-[#b58e5a] text-white font-bold tracking-widest text-xs md:text-sm px-6 py-3 shadow-xl hover:bg-[#99764a] transition-colors uppercase">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                                <span>{idioma === 'es' ? (content.textoBoton_ES || content.textoBoton || 'Volver al pueblito') : (content.textoBoton_EN || 'Return to town')}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -584,18 +584,20 @@ const EditarNosotros = () => {
                                     </div>
                                 )}
 
-                                <label className="block md:col-span-2">
-                                    <div className="text-sm font-semibold text-gray-700 mb-1">
-                                        {activeEdit === 'caborcaHoy' ? `Contenido (${idioma.toUpperCase()})` : `Contenido (${idioma.toUpperCase()}) - separar párrafos con línea en blanco`}
-                                    </div>
-                                    <textarea
-                                        name={idioma === 'en' ? 'body_EN' : 'body_ES'}
-                                        value={idioma === 'en' ? form.body_EN : form.body_ES}
-                                        onChange={handleInput}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded focus:border-caborca-cafe focus:outline-none text-sm"
-                                        rows={6}
-                                    />
-                                </label>
+                                {activeEdit !== 'hero' && (
+                                    <label className="block md:col-span-2">
+                                        <div className="text-sm font-semibold text-gray-700 mb-1">
+                                            {activeEdit === 'caborcaHoy' ? `Contenido (${idioma.toUpperCase()})` : `Contenido (${idioma.toUpperCase()}) - separar párrafos con línea en blanco`}
+                                        </div>
+                                        <textarea
+                                            name={idioma === 'en' ? 'body_EN' : 'body_ES'}
+                                            value={idioma === 'en' ? form.body_EN : form.body_ES}
+                                            onChange={handleInput}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded focus:border-caborca-cafe focus:outline-none text-sm"
+                                            rows={6}
+                                        />
+                                    </label>
+                                )}
 
                                 {activeEdit === 'proceso' && (
                                     <label className="block md:col-span-2">
